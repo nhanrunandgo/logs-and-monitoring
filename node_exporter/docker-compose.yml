@@ -4,14 +4,19 @@ services:
     image: prom/node-exporter:latest
     container_name: node_exporter
     restart: unless-stopped
-    network_mode: "host" # Bắt buộc dùng host mode để lấy chính xác metric của các card mạng vật lý (eth0, eth1, v.v.)
+    network_mode: "host" 
     pid: "host"
+    privileged: true # Cần thiết để đọc /sys/kernel/debug
     volumes:
       - /:/rootfs:ro
       - /sys:/host/sys:ro
       - /proc:/host/proc:ro
+      # Thêm thư mục chứa file metrics custom
+      - /opt/custom_metrics:/var/lib/node_exporter/textfile:ro
     command:
       - '--path.procfs=/host/proc'
       - '--path.rootfs=/rootfs'
       - '--path.sysfs=/host/sys'
       - '--collector.filesystem.mount-points-exclude=^/(sys|proc|dev|host|etc)($$|/)'
+      # Bật textfile collector trỏ vào thư mục vừa mount
+      - '--collector.textfile.directory=/var/lib/node_exporter/textfile'

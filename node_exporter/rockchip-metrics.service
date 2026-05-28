@@ -1,0 +1,12 @@
+[Unit]
+Description=Rockchip Hardware Metrics Exporter
+After=network.target
+
+[Service]
+Type=simple
+# Chạy vòng lặp vô hạn, gọi script mỗi 5s
+ExecStart=/bin/bash -c "while true; do /usr/local/bin/rockchip_metrics.sh; sleep 5; done"
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
