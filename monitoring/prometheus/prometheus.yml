@@ -1,5 +1,5 @@
 global:
-  scrape_interval: 15s # Chu kỳ lấy dữ liệu 15 giây 1 lần
+  scrape_interval: 5s # Chu kỳ lấy dữ liệu 15 giây 1 lần
 
 scrape_configs:
   - job_name: 'node_exporter'
