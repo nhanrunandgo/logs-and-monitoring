@@ -1,25 +1,30 @@
 global:
-  scrape_interval: 15s
+  scrape_interval: 5s
 
 scrape_configs:
   - job_name: 'node_exporter'
     static_configs:
-      # NanoPi R76S (RK3576)
       - targets: ['100.80.80.80:9100']
         labels:
-          instance: 'NanoPi-R76S(RK3576)'
+          new_nodename: 'NanoPi-R76S (RK3576)'
       
-      # NanoPi M6 (RK3588)
       - targets: ['100.90.90.90:9100']
         labels:
-          instance: 'NanoPi-M6(RK3588)'
+          new_nodename: 'NanoPi-M6 (RK3588)'
       
-      # Middle server for RK3588
-      - targets: ['10.10.10.107:9100']
-        labels:
-          instance: 'Middle-server(RK3576)'
-
-      # Middle server for RK3588
       - targets: ['10.10.10.103:9100']
         labels:
-          instance: 'Middle-server(RK3588)'
+          new_nodename: 'Middle-server (RK3588)'
+      
+      - targets: ['10.10.10.107:9100']
+        labels:
+          new_nodename: 'Middle-server(RK3576)'
+
+    # Khối lệnh này sẽ lấy giá trị từ nhãn 'new_nodename' vừa đặt
+    # và ghi đè thẳng vào nhãn 'nodename' gốc của hệ thống
+    metric_relabel_configs:
+      - source_labels: [new_nodename]
+        regex: '(.+)'
+        target_label: nodename
+        replacement: $1
+        action: replace
