@@ -1,0 +1,11 @@
+global:
+  scrape_interval: 15s # Chu kỳ lấy dữ liệu 15 giây 1 lần
+
+scrape_configs:
+  - job_name: 'node_exporter'
+    static_configs:
+      - targets:
+        - '100.80.80.80:9100'
+        - '100.90.90.90:9100'
+        - '10.10.10.103:9100'
+        - '10.10.10.107:9100'
